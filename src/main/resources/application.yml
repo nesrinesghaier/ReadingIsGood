@@ -9,8 +9,11 @@ spring:
     url: jdbc:postgresql://localhost:5432/reading-is-good
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+app:
+  jwtSecret: secret
+  jwtExpirationMs: 86400000
