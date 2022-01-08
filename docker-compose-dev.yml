@@ -1,0 +1,13 @@
+version: '3'
+services:
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_DB: reading-is-good
+      POSTGRES_USER: reading-is-good
+      POSTGRES_PASSWORD: reading-is-good
+    ports:
+      - "5432:5432"
+    volumes:
+      - /opt/db:/var/lib/postgres/data
