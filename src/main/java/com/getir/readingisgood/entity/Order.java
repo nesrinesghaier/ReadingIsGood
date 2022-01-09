@@ -35,6 +35,6 @@ public class Order {
 
     @ManyToOne()
     @JoinColumn(name = "username")
-    private User user;
+    private Customer customer;
 
 }

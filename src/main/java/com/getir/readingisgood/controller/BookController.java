@@ -2,14 +2,12 @@ package com.getir.readingisgood.controller;
 
 import com.getir.readingisgood.model.BookDto;
 import com.getir.readingisgood.service.BookService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
-@RestController("/book")
+@RestController()
+@RequestMapping("/api/book")
 public class BookController {
 
     @Resource
@@ -26,6 +24,4 @@ public class BookController {
         bookService.updateBook(bookDto);
         return "Book updated";
     }
-
-
 }

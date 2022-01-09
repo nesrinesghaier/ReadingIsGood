@@ -9,13 +9,14 @@ import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.List;
 
-@RestController("order")
+@RestController()
+@RequestMapping("/api/order")
 public class OrderController {
 
     @Resource
     private OrderService orderService;
 
-    @PostMapping
+    @PostMapping("")
     public void placeOrder(@RequestBody OrderDto orderDto) {
         orderService.addOrder(orderDto);
     }

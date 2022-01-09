@@ -1,14 +1,14 @@
 package com.getir.readingisgood.service;
 
 import com.getir.readingisgood.config.UserDetailsImpl;
+import com.getir.readingisgood.entity.Customer;
 import com.getir.readingisgood.entity.Role;
-import com.getir.readingisgood.entity.User;
 import com.getir.readingisgood.model.ERole;
 import com.getir.readingisgood.model.JwtResponse;
 import com.getir.readingisgood.model.LoginRequest;
 import com.getir.readingisgood.model.SignUpRequest;
 import com.getir.readingisgood.repository.RoleRepository;
-import com.getir.readingisgood.repository.UserRepository;
+import com.getir.readingisgood.repository.CustomerRepository;
 import com.getir.readingisgood.security.jwt.JwtUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,7 +29,7 @@ public class AuthService {
     @Resource
     private AuthenticationManager authenticationManager;
     @Resource
-    private UserRepository userRepository;
+    private CustomerRepository customerRepository;
     @Resource
     private RoleRepository roleRepository;
     @Resource
@@ -50,11 +50,11 @@ public class AuthService {
     }
 
     public String registerUser(SignUpRequest request) {
-        boolean userAlreadyExists = userRepository.existsByUsername(request.getEmail());
+        boolean userAlreadyExists = customerRepository.existsByUsername(request.getEmail());
         if (userAlreadyExists) {
             return "Error: Email is already in use!";
         }
-        User user = User.builder().username(request.getEmail())
+        Customer customer = Customer.builder().username(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName()).build();
@@ -79,8 +79,8 @@ public class AuthService {
                 }
             });
         }
-        user.setRoles(roles);
-        userRepository.save(user);
+        customer.setRoles(roles);
+        customerRepository.save(customer);
         return "User registered successfully!";
     }
 
