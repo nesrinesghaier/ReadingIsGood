@@ -18,4 +18,10 @@ public class CustomerService {
         Customer customer = customerRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
         return customer.getOrders();
     }
+
+    public int getOrderCount(String username) {
+        Customer customer = customerRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        return customer.getOrders().size();
+    }
+
 }

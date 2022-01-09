@@ -7,9 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -18,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "customer", uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
+@Table(name = "customers", uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
 public class Customer {
 
     @Id
@@ -36,12 +34,6 @@ public class Customer {
 
     @Column
     private String lastName;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "username"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
 
     @Column
     private String address;
