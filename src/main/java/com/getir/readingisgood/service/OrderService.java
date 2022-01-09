@@ -3,6 +3,7 @@ package com.getir.readingisgood.service;
 import com.getir.readingisgood.entity.Order;
 import com.getir.readingisgood.entity.OrderDetail;
 import com.getir.readingisgood.model.OrderDto;
+import com.getir.readingisgood.model.StatisticsDto;
 import com.getir.readingisgood.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +31,18 @@ public class OrderService {
         return orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
     }
 
-    public List<Order> getOrdersBetweenDates(LocalDate startDate, LocalDate endDate) { // 11-04 -> 13-04 11-04 00:00 -> 13-04 11:59
+    public List<Order> getOrdersBetweenDates(LocalDate startDate, LocalDate endDate) {
         return orderRepository.findAllByOrderDateTimeBetween(startDate.atStartOfDay(), endDate.atTime(11, 59));
     }
 
+    public List<StatisticsDto> getOrderCount(String username) {
+        List<StatisticsDto> monthlyOrdersCount = orderRepository.getOrdersCountByMonth(username);
+        List<StatisticsDto> statisticsDtoList = orderRepository.getPurchasedBooksCountByMonth(username);
+        statisticsDtoList.forEach(s -> s.setOrderCount(monthlyOrdersCount.stream()
+                .filter(t -> t.getMonth().trim().equals(s.getMonth().trim()))
+                .findFirst().orElse(StatisticsDto.builder().build()).getOrderCount()));
+        return statisticsDtoList;
+    }
 
     private Order mapDtoToOrder(OrderDto orderDto) {
         List<OrderDetail> orderDetails = orderDto.getOrderDetails().stream()
