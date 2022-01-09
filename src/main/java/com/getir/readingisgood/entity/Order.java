@@ -5,7 +5,6 @@ import com.getir.readingisgood.model.EStatus;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,8 +22,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
-    @NotBlank
+    @Enumerated(EnumType.STRING)
     private EStatus status;
 
     @Column
