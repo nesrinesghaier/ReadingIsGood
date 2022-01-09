@@ -4,6 +4,9 @@ package com.getir.readingisgood.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,9 +21,13 @@ import java.util.Set;
 public class User {
 
     @Id
+    @Email
+    @Size(max = 50)
     private String username;
 
     @Column
+    @NotBlank
+    @Size(max = 120)
     private String password;
 
     @Column

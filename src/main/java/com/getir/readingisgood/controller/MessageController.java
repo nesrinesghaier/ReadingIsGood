@@ -14,8 +14,6 @@ public class MessageController {
 
     @GetMapping("/test")
     public String getMessage() {
-
-        userService.registerCustomer();
         return "Hey there";
     }
 

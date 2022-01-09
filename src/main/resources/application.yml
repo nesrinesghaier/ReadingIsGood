@@ -1,4 +1,8 @@
 spring:
+  liquibase:
+    enabled: false
+    change-log: "classpath:/scripts/liquibase-changelog.xml"
+
   sql:
     init:
       platform: postgres
@@ -16,4 +20,5 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 app:
   jwtSecret: secret
-  jwtExpirationMs: 86400000
+  jwtExpirationMs: 864000
+
