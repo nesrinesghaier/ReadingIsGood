@@ -22,7 +22,7 @@ public class OrderDetail {
 
     @Column
     @NotBlank
-    private Long price;
+    private double price;
 
     @Column
     @NotBlank
