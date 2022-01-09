@@ -1,7 +1,7 @@
 package com.getir.readingisgood.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.getir.readingisgood.entity.User;
+import com.getir.readingisgood.entity.Customer;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,12 +22,12 @@ public class UserDetailsImpl implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public static UserDetailsImpl build(User user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
+    public static UserDetailsImpl build(Customer customer) {
+        List<GrantedAuthority> authorities = customer.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
 
-        return new UserDetailsImpl(user.getUsername(), user.getPassword(), authorities);
+        return new UserDetailsImpl(customer.getUsername(), customer.getPassword(), authorities);
     }
 
     @Override

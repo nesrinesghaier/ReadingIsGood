@@ -1,8 +1,8 @@
 package com.getir.readingisgood.service;
 
 import com.getir.readingisgood.config.UserDetailsImpl;
-import com.getir.readingisgood.entity.User;
-import com.getir.readingisgood.repository.UserRepository;
+import com.getir.readingisgood.entity.Customer;
+import com.getir.readingisgood.repository.CustomerRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,13 +14,13 @@ import javax.transaction.Transactional;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Resource
-    private UserRepository userRepository;
+    private CustomerRepository customerRepository;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
+        Customer customer = customerRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " not found"));
-        return UserDetailsImpl.build(user);
+        return UserDetailsImpl.build(customer);
     }
 }
