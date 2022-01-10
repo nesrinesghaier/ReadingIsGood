@@ -1,10 +1,14 @@
 package com.getir.readingisgood.service;
 
+import com.getir.readingisgood.entity.Customer;
 import com.getir.readingisgood.entity.Order;
 import com.getir.readingisgood.entity.OrderDetail;
 import com.getir.readingisgood.model.OrderDto;
 import com.getir.readingisgood.model.StatisticsDto;
+import com.getir.readingisgood.repository.CustomerRepository;
 import com.getir.readingisgood.repository.OrderRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,43 +20,58 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class OrderService {
     @Resource
     private OrderRepository orderRepository;
     @Resource
+    private CustomerRepository customerRepository;
+    @Resource
     private OrderDetailService orderDetailService;
 
-    public void addOrder(OrderDto orderDto) {
-        Order order = mapDtoToOrder(orderDto);
-        orderRepository.save(order);
+    public Order addOrder(OrderDto orderDto) {
+        Customer customer = customerRepository.findByEmail(orderDto.getCustomerEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("Customer with email " + orderDto.getCustomerEmail() + " not found"));
+        Order order = Order.builder()
+                .orderDateTime(LocalDateTime.now())
+                .status(orderDto.getStatus())
+                .customer(customer)
+                .build();
+        addOrderDetailsDtoToOrder(orderDto, order);
+        log.info("Order Details were added to order entity");
+        return orderRepository.save(order);
     }
 
-    public Order getOrder(long orderId) {
-        return orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
+    public Order getOrderById(long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     public List<Order> getOrdersBetweenDates(LocalDate startDate, LocalDate endDate) {
-        return orderRepository.findAllByOrderDateTimeBetween(startDate.atStartOfDay(), endDate.atTime(11, 59));
+        return orderRepository.findAllByOrderDateTimeBetween(startDate.atStartOfDay(), endDate.atTime(23, 59));
     }
 
-    public List<StatisticsDto> getOrderCount(String email) {
+    public List<StatisticsDto> getOrderStatistics(String email) {
+        customerRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Customer with email " + email + " was not found"));
+
         List<StatisticsDto> monthlyOrdersCount = orderRepository.getOrdersCountByMonth(email);
         List<StatisticsDto> statisticsDtoList = orderRepository.getPurchasedBooksCountByMonth(email);
         statisticsDtoList.forEach(s -> s.setOrderCount(monthlyOrdersCount.stream()
                 .filter(t -> t.getMonth().trim().equals(s.getMonth().trim()))
                 .findFirst().orElse(StatisticsDto.builder().build()).getOrderCount()));
+        log.info("Successfully retrieved order statistics for {} user email", email);
         return statisticsDtoList;
     }
 
-    private Order mapDtoToOrder(OrderDto orderDto) {
+    private void addOrderDetailsDtoToOrder(OrderDto orderDto, Order order) {
+
         List<OrderDetail> orderDetails = orderDto.getOrderDetails().stream()
-                .map(o -> orderDetailService.buildOrderDetails(o))
+                .map(detailDto -> orderDetailService.buildOrderDetails(detailDto, order))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-        return Order.builder()
-                .orderDateTime(orderDto.getOrderDateTime() != null ? orderDto.getOrderDateTime() : LocalDateTime.now())
-                .status(orderDto.getStatus())
-                .orderDetails(orderDetails)
-                .build();
+        order.setOrderDetails(orderDetails);
     }
+
+
 }

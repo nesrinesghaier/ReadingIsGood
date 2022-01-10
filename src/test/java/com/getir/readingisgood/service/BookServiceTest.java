@@ -23,25 +23,24 @@ public class BookServiceTest {
     private BookRepository bookRepository;
 
     @Test
-    public void addBookTest() {
+    public void addBook() {
         BookDto bookDto = mockBookDto();
         bookService.addBook(bookDto);
         verify(bookRepository, times(1)).save(any());
     }
 
     @Test
-    public void updateBookTest() {
+    public void updateBook() {
         BookDto bookDto = mockBookDto();
         when(bookRepository.findById(any())).thenReturn(Optional.of(Book.builder().build()));
-        bookService.updateBook(bookDto);
+        bookService.updateBookStock(bookDto);
         verify(bookRepository, times(1)).save(any());
     }
 
     @Test
-    public void updateStockTest() {
-        when(bookRepository.findById(any())).thenReturn(Optional.of(Book.builder().build()));
-        bookService.updateStock(1,5);
-        verify(bookRepository, times(1)).findById(any());
+    public void updateStock() {
+        bookService.updateStock(Book.builder().title("test").author("test").stock(5).build(), 5);
+        verify(bookRepository, times(1)).save(any());
     }
 
     BookDto mockBookDto() {
