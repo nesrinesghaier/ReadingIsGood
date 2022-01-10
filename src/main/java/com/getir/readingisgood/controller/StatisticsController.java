@@ -15,8 +15,8 @@ public class StatisticsController {
     private OrderService orderService;
 
     @GetMapping("")
-    public List<StatisticsDto> getMonthlyStatistics(@RequestParam String username) {
-        return orderService.getOrderCount(username);
+    public List<StatisticsDto> getMonthlyStatistics(@RequestParam String email) {
+        return orderService.getOrderCount(email);
     }
 
 }

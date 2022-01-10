@@ -17,13 +17,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "customers", uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
+@Table(name = "customers", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 public class Customer {
 
     @Id
     @Email
     @Size(max = 50)
-    private String username;
+    private String email;
 
     @Column
     @NotBlank

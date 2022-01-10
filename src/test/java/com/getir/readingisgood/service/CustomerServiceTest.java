@@ -36,24 +36,24 @@ public class CustomerServiceTest {
     @Test
     public void getCustomerOrdersTest() {
         Page<Order> page = new PageImpl<>(List.of(mockOrder()));
-        when(orderRepository.findAllByCustomerUsername(any(), any())).thenReturn(page);
+        when(orderRepository.findAllByCustomerEmail(any(), any())).thenReturn(page);
         customerService.getCustomerOrders("test@test.com", 0);
-        verify(orderRepository, times(1)).findAllByCustomerUsername(any(), any());
+        verify(orderRepository, times(1)).findAllByCustomerEmail(any(), any());
     }
 
     @Test
     public void getOrderCountTest() {
-        when(customerRepository.findByUsername(any())).thenReturn(Optional.of(Customer.builder().orders(new ArrayList<>()).build()));
+        when(customerRepository.findByEmail(any())).thenReturn(Optional.of(Customer.builder().orders(new ArrayList<>()).build()));
         int orderCount = customerService.getOrderCount("test@test.com");
-        verify(customerRepository, times(1)).findByUsername(any());
+        verify(customerRepository, times(1)).findByEmail(any());
         assertEquals(0, orderCount);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void getOrderCountTestException() {
-        when(customerRepository.findByUsername(any())).thenThrow(new EntityNotFoundException());
+        when(customerRepository.findByEmail(any())).thenThrow(new EntityNotFoundException());
         customerService.getOrderCount("test@test2.com");
-        verify(customerRepository, times(0)).findByUsername(any());
+        verify(customerRepository, times(0)).findByEmail(any());
     }
 
     Order mockOrder() {
@@ -61,7 +61,7 @@ public class CustomerServiceTest {
                 .id(1)
                 .orderDateTime(LocalDateTime.now())
                 .status(EStatus.PENDING)
-                .customer(Customer.builder().username("test@test.com").build())
+                .customer(Customer.builder().email("test@test.com").build())
                 .build();
     }
 }

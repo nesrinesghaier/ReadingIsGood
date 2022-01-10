@@ -2,6 +2,7 @@ package com.getir.readingisgood.service;
 
 import com.getir.readingisgood.entity.Customer;
 import com.getir.readingisgood.entity.Order;
+import com.getir.readingisgood.exception.UserNotFountException;
 import com.getir.readingisgood.repository.CustomerRepository;
 import com.getir.readingisgood.repository.OrderRepository;
 import org.springframework.data.domain.Page;
@@ -20,14 +21,16 @@ public class CustomerService {
     @Resource
     private OrderRepository orderRepository;
 
-    public Page<Order> getCustomerOrders(String username, int pageNumber) {
-        Pageable pageable =
-                PageRequest.of(pageNumber, 3, Sort.by("orderDateTime"));
-        return orderRepository.findAllByCustomerUsername(username, pageable);
+    public Page<Order> getCustomerOrders(String email, int pageNumber) {
+        Customer customer = customerRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFountException("Customer with " + email + " email does not exist"));
+
+        Pageable pageable = PageRequest.of(pageNumber, 3, Sort.by("orderDateTime"));
+        return orderRepository.findAllByCustomerEmail(customer.getEmail(), pageable);
     }
 
-    public int getOrderCount(String username) {
-        Customer customer = customerRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+    public int getOrderCount(String email) {
+        Customer customer = customerRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
         return customer.getOrders().size();
     }
 

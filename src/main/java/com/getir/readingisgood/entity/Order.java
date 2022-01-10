@@ -33,7 +33,7 @@ public class Order {
     List<OrderDetail> orderDetails;
 
     @ManyToOne()
-    @JoinColumn(name = "username")
+    @JoinColumn(name = "email")
     @JsonIgnore()
     private Customer customer;
 
