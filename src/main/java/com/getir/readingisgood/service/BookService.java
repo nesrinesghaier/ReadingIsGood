@@ -15,22 +15,22 @@ public class BookService {
     @Resource
     private BookRepository bookRepository;
 
-    public void addBook(BookDto bookDto) {
+    public Book addBook(BookDto bookDto) {
         Book bookToBeAdded = buildBookFromDto(bookDto);
-        bookRepository.save(bookToBeAdded);
+        return bookRepository.save(bookToBeAdded);
     }
 
-    public void updateBookStock(BookDto bookDto) {
+    public Book updateBookStock(BookDto bookDto) {
         Book book = bookRepository.findById(bookDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Book with specified id does not exist"));
         book.setStock(bookDto.getStock());
-        bookRepository.save(book);
+        return bookRepository.save(book);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void updateStock(long id, int quantity) {
-        Book book = bookRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public void updateStock(Book book, int quantity) {
         book.setStock(book.getStock() - quantity);
+        bookRepository.save(book);
     }
 
     private Book buildBookFromDto(BookDto bookDto) {

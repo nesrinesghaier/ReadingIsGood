@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -22,11 +22,11 @@ public class OrderDetail {
     private long id;
 
     @Column
-    @NotBlank
+    @NotNull
     private double price;
 
     @Column
-    @NotBlank
+    @NotNull
     private int quantity;
 
     @ManyToOne()
@@ -36,6 +36,7 @@ public class OrderDetail {
 
     @ManyToOne()
     @JoinColumn(name = "book_id", nullable = false)
+    @NotNull
     private Book book;
 
 }

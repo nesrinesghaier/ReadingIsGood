@@ -10,11 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -44,7 +40,7 @@ public class BookServiceTest {
     @Test
     public void updateStock() {
         when(bookRepository.findById(any())).thenReturn(Optional.of(Book.builder().build()));
-        bookService.updateStock(1, 5);
+        bookService.updateStock(Book.builder().title("test").author("test").stock(5).build(), 5);
         verify(bookRepository, times(1)).findById(any());
     }
 

@@ -11,4 +11,5 @@ public class OrderDetailDto {
     private double price;
     private int quantity;
     private long bookId;
+    private long orderId;
 }

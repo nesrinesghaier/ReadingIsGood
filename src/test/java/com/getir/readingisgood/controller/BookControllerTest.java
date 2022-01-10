@@ -1,5 +1,6 @@
 package com.getir.readingisgood.controller;
 
+import com.getir.readingisgood.entity.Book;
 import com.getir.readingisgood.model.BookDto;
 import com.getir.readingisgood.service.BookService;
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class BookControllerTest {
     @Test
     public void addBook() {
         BookDto bookDto = mockBookDto();
-        ResponseEntity<String> response = bookController.addBook(bookDto);
+        ResponseEntity<Book> response = bookController.addBook(bookDto);
         verify(bookService, times(1)).addBook(any());
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
@@ -36,7 +37,7 @@ public class BookControllerTest {
     @Test
     public void updateBook() {
         BookDto bookDto = mockBookDto();
-        ResponseEntity<String> response = bookController.updateBookStock(bookDto);
+        ResponseEntity<?> response = bookController.updateBookStock(bookDto);
         verify(bookService, times(1)).updateBookStock(any());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
@@ -45,7 +46,7 @@ public class BookControllerTest {
     public void updateNonExistingBook() {
         BookDto bookDto = mockBookDto();
         doThrow(new EntityNotFoundException("Book with specified id does not exist")).when(bookService).updateBookStock(any());
-        ResponseEntity<String> response = bookController.updateBookStock(bookDto);
+        ResponseEntity<?> response = bookController.updateBookStock(bookDto);
         verify(bookService, times(1)).updateBookStock(any());
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }

@@ -1,10 +1,13 @@
 package com.getir.readingisgood.service;
 
+import com.getir.readingisgood.entity.Customer;
 import com.getir.readingisgood.entity.Order;
 import com.getir.readingisgood.entity.OrderDetail;
 import com.getir.readingisgood.model.OrderDto;
 import com.getir.readingisgood.model.StatisticsDto;
+import com.getir.readingisgood.repository.CustomerRepository;
 import com.getir.readingisgood.repository.OrderRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,11 +23,20 @@ public class OrderService {
     @Resource
     private OrderRepository orderRepository;
     @Resource
+    private CustomerRepository customerRepository;
+    @Resource
     private OrderDetailService orderDetailService;
 
-    public void addOrder(OrderDto orderDto) {
-        Order order = mapDtoToOrder(orderDto);
-        orderRepository.save(order);
+    public Order addOrder(OrderDto orderDto) {
+        Customer customer = customerRepository.findByEmail(orderDto.getCustomerEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("Customer with email " + orderDto.getCustomerEmail() + " not found"));
+        Order order = Order.builder()
+                .orderDateTime(LocalDateTime.now())
+                .status(orderDto.getStatus())
+                .customer(customer)
+                .build();
+        addOrderDetailsDtoToOrder(orderDto, order);
+        return orderRepository.save(order);
     }
 
     public Order getOrderById(long orderId) {
@@ -32,7 +44,7 @@ public class OrderService {
     }
 
     public List<Order> getOrdersBetweenDates(LocalDate startDate, LocalDate endDate) {
-        return orderRepository.findAllByOrderDateTimeBetween(startDate.atStartOfDay(), endDate.atTime(11, 59));
+        return orderRepository.findAllByOrderDateTimeBetween(startDate.atStartOfDay(), endDate.atTime(23, 59));
     }
 
     public List<StatisticsDto> getOrderStatistics(String email) {
@@ -44,9 +56,10 @@ public class OrderService {
         return statisticsDtoList;
     }
 
-    private Order mapDtoToOrder(OrderDto orderDto) {
+    private Order addOrderDetailsDtoToOrder(OrderDto orderDto, Order order) {
+
         List<OrderDetail> orderDetails = orderDto.getOrderDetails().stream()
-                .map(o -> orderDetailService.buildOrderDetails(o))
+                .map(detailDto -> orderDetailService.buildOrderDetails(detailDto, order))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         return Order.builder()
@@ -55,4 +68,6 @@ public class OrderService {
                 .orderDetails(orderDetails)
                 .build();
     }
+
+
 }

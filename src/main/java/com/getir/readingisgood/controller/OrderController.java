@@ -1,6 +1,7 @@
 package com.getir.readingisgood.controller;
 
 import com.getir.readingisgood.entity.Order;
+import com.getir.readingisgood.exception.BookStockUnavailableException;
 import com.getir.readingisgood.model.OrderDto;
 import com.getir.readingisgood.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.OptimisticLockException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,10 +24,21 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("")
-    public ResponseEntity<String> placeOrder(@RequestBody OrderDto orderDto) {
-        orderService.addOrder(orderDto);
-        log.info("Order placed successfully");
-        return new ResponseEntity<>("Order placed successfully", HttpStatus.CREATED);
+    public ResponseEntity<?> placeOrder(@RequestBody OrderDto orderDto) {
+        try {
+            Order order = orderService.addOrder(orderDto);
+            log.info("Order placed successfully");
+            return new ResponseEntity<>(order, HttpStatus.CREATED);
+        } catch (BookStockUnavailableException e) {
+            log.error("The book stock with title {} is not available in stock anymore", e.getBookTitle());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (OptimisticLockException e) {
+            log.error("The specified book is not available in stock anymore");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (EntityNotFoundException e) {
+            log.error("Customer with email " + orderDto.getCustomerEmail() + " not found");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{id}")

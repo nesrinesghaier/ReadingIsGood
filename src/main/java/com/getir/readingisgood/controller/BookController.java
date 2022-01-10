@@ -1,5 +1,6 @@
 package com.getir.readingisgood.controller;
 
+import com.getir.readingisgood.entity.Book;
 import com.getir.readingisgood.model.BookDto;
 import com.getir.readingisgood.service.BookService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,17 +20,18 @@ public class BookController {
     private BookService bookService;
 
     @PostMapping("")
-    public ResponseEntity<String> addBook(@RequestBody BookDto bookDto) {
-        bookService.addBook(bookDto);
+    public ResponseEntity<Book> addBook(@RequestBody BookDto bookDto) {
+        Book book = bookService.addBook(bookDto);
         log.info("Book added successfully");
-        return new ResponseEntity<>("Book added successfully",HttpStatus.CREATED);
+        return new ResponseEntity<>(book, HttpStatus.CREATED);
     }
 
     @PutMapping("")
-    public ResponseEntity<String> updateBookStock(@RequestBody BookDto bookDto) {
+    public ResponseEntity<?> updateBookStock(@RequestBody BookDto bookDto) {
         try {
-            bookService.updateBookStock(bookDto);
-            return ResponseEntity.ok("Book stock updated successfully");
+            Book book = bookService.updateBookStock(bookDto);
+            log.info("Book stock updated successfully");
+            return ResponseEntity.ok(book);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

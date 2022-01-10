@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -37,7 +38,7 @@ public class Book {
     private String publisher;
 
     @Column
-    @NotBlank
+    @NotNull
     private int stock;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)

@@ -33,7 +33,7 @@ public class OrderControllerTest {
     @Test
     public void addOrder() {
         OrderDto OrderDto = mockOrderDto();
-        ResponseEntity<String> response = OrderController.placeOrder(OrderDto);
+        ResponseEntity<?> response = OrderController.placeOrder(OrderDto);
         verify(OrderService, times(1)).addOrder(any());
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }

@@ -1,10 +1,12 @@
 package com.getir.readingisgood.service;
 
+import com.getir.readingisgood.entity.Customer;
 import com.getir.readingisgood.entity.Order;
 import com.getir.readingisgood.entity.OrderDetail;
 import com.getir.readingisgood.model.EStatus;
 import com.getir.readingisgood.model.OrderDetailDto;
 import com.getir.readingisgood.model.OrderDto;
+import com.getir.readingisgood.repository.CustomerRepository;
 import com.getir.readingisgood.repository.OrderRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,11 +33,14 @@ public class OrderServiceTest {
     private OrderDetailService orderDetailService;
     @Mock
     private OrderRepository orderRepository;
+    @Mock
+    private CustomerRepository customerRepository;
 
     @Test
     public void addOrder() {
         OrderDto orderDto = mockOrderDto();
-        when(orderDetailService.buildOrderDetails(any())).thenReturn(OrderDetail.builder().build());
+        when(customerRepository.findByEmail(any())).thenReturn(Optional.of(Customer.builder().email("test@test.com").build()));
+        when(orderDetailService.buildOrderDetails(any(), any())).thenReturn(OrderDetail.builder().build());
         orderService.addOrder(orderDto);
         verify(orderRepository, times(1)).save(any());
     }
@@ -66,6 +71,7 @@ public class OrderServiceTest {
                         .price(25.2)
                         .quantity(2)
                         .build()))
+                .customerEmail("test@test.com")
                 .build();
     }
 }
