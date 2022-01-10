@@ -30,4 +30,4 @@ mvn clean package -Dmaven.test.skip=true
 docker-compose -f docker-compose-dev.yml up -d
 ```
 
-[Link](https://galactic-station-824484.postman.co/workspace/Team-Workspace~0ddfccd2-fc24-4c62-8c05-3b935d830cad/collection/4959808-46289f14-bea5-44e3-997c-ae410b36b37f) to postman collection: 
+[Link](https://app.getpostman.com/join-team?invite_code=728c3e9a9acc3453c797eff60037aee6&ws=0ddfccd2-fc24-4c62-8c05-3b935d830cad) to postman collection: 
