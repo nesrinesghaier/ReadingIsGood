@@ -15,13 +15,13 @@ VALUES ('author2', 'publisher2', 10, 'title2', 'Thriller');
 INSERT INTO books(author, publisher, stock, title, type)
 VALUES ('author3', 'publisher3', 5, 'title3', 'Mix');
 INSERT INTO orders(order_date_time, status, username)
-VALUES ('2020-12-22 19:10:25-07', 'PENDING', 'nesrinesghaier11@gmail.com');
+VALUES ('2020-12-22 19:10:25-07', 'COMPLETED', 'nesrinesghaier11@gmail.com');
 INSERT INTO orders(order_date_time, status, username)
-VALUES ('2021-01-01 13:10:25-07', 'PENDING', 'nesrinesghaier11@gmail.com');
+VALUES ('2021-01-01 13:10:25-07', 'COMPLETED', 'nesrinesghaier11@gmail.com');
 INSERT INTO orders(order_date_time, status, username)
-VALUES ('2021-02-01 15:10:25-07', 'PENDING', 'nesrinesghaier10@gmail.com');
+VALUES ('2021-02-01 15:10:25-07', 'COMPLETED', 'nesrinesghaier10@gmail.com');
 INSERT INTO orders(order_date_time, status, username)
-VALUES ('2021-02-01 10:10:25-07', 'PENDING', 'nesrinesghaier11@gmail.com');
+VALUES ('2021-02-01 10:10:25-07', 'COMPLETED', 'nesrinesghaier11@gmail.com');
 INSERT INTO orders(order_date_time, status, username)
 VALUES ('2021-02-025 16:10:25-07', 'PENDING', 'nesrinesghaier11@gmail.com');
 INSERT INTO order_details(price, quantity, book_id, order_id)
