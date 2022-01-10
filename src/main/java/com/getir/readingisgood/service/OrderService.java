@@ -7,6 +7,7 @@ import com.getir.readingisgood.model.OrderDto;
 import com.getir.readingisgood.model.StatisticsDto;
 import com.getir.readingisgood.repository.CustomerRepository;
 import com.getir.readingisgood.repository.OrderRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class OrderService {
     @Resource
     private OrderRepository orderRepository;
@@ -36,11 +38,13 @@ public class OrderService {
                 .customer(customer)
                 .build();
         addOrderDetailsDtoToOrder(orderDto, order);
+        log.info("Order Details were added to order entity");
         return orderRepository.save(order);
     }
 
     public Order getOrderById(long orderId) {
-        return orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
+        return orderRepository.findById(orderId)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     public List<Order> getOrdersBetweenDates(LocalDate startDate, LocalDate endDate) {
@@ -48,25 +52,25 @@ public class OrderService {
     }
 
     public List<StatisticsDto> getOrderStatistics(String email) {
+        customerRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Customer with email " + email + " was not found"));
+
         List<StatisticsDto> monthlyOrdersCount = orderRepository.getOrdersCountByMonth(email);
         List<StatisticsDto> statisticsDtoList = orderRepository.getPurchasedBooksCountByMonth(email);
         statisticsDtoList.forEach(s -> s.setOrderCount(monthlyOrdersCount.stream()
                 .filter(t -> t.getMonth().trim().equals(s.getMonth().trim()))
                 .findFirst().orElse(StatisticsDto.builder().build()).getOrderCount()));
+        log.info("Successfully retrieved order statistics for {} user email", email);
         return statisticsDtoList;
     }
 
-    private Order addOrderDetailsDtoToOrder(OrderDto orderDto, Order order) {
+    private void addOrderDetailsDtoToOrder(OrderDto orderDto, Order order) {
 
         List<OrderDetail> orderDetails = orderDto.getOrderDetails().stream()
                 .map(detailDto -> orderDetailService.buildOrderDetails(detailDto, order))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-        return Order.builder()
-                .orderDateTime(orderDto.getOrderDateTime() != null ? orderDto.getOrderDateTime() : LocalDateTime.now())
-                .status(orderDto.getStatus())
-                .orderDetails(orderDetails)
-                .build();
+        order.setOrderDetails(orderDetails);
     }
 
 

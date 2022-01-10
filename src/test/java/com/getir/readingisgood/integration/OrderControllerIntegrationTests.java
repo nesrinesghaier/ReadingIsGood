@@ -51,9 +51,9 @@ class OrderControllerIntegrationTests {
 
     @Test
     void testGetOrderById() {
-        ResponseEntity<Order> response = orderController.getOrderById(1);
+        ResponseEntity<?> response = orderController.getOrderById(1);
         assertThat(response).hasFieldOrPropertyWithValue("status", HttpStatus.OK);
-        long orderId = Objects.requireNonNull(response.getBody()).getId();
+        long orderId = Objects.requireNonNull((Order) response.getBody()).getId();
         assertThat(orderId).isEqualTo(1);
     }
 

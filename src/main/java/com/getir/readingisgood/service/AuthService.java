@@ -50,6 +50,7 @@ public class AuthService {
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName()).build();
         customerRepository.save(customer);
+        log.info("Customer registered successfully");
         return "Customer registered successfully!";
     }
 

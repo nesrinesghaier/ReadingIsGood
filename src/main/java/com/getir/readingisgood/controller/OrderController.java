@@ -42,13 +42,20 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrderById(@PathVariable long id) {
-        return ResponseEntity.ok(orderService.getOrderById(id));
+    public ResponseEntity<?> getOrderById(@PathVariable long id) {
+        try {
+            log.info("Retrieving order with given id");
+            return ResponseEntity.ok(orderService.getOrderById(id));
+        } catch (EntityNotFoundException e) {
+            log.error("Order with given id was not found");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("")
     public ResponseEntity<List<Order>> getOrderBetweenDates(@RequestParam LocalDate startDate,
                                                             @RequestParam LocalDate endDate) {
+        log.info("Retrieving order between {} and {} dates", startDate, endDate);
         return ResponseEntity.ok(orderService.getOrdersBetweenDates(startDate, endDate));
     }
 }

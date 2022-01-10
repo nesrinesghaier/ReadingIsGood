@@ -5,6 +5,7 @@ import com.getir.readingisgood.entity.Order;
 import com.getir.readingisgood.exception.UserNotFountException;
 import com.getir.readingisgood.repository.CustomerRepository;
 import com.getir.readingisgood.repository.OrderRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
 
 @Service
+@Slf4j
 public class CustomerService {
     @Resource
     private CustomerRepository customerRepository;
@@ -26,12 +28,8 @@ public class CustomerService {
                 .orElseThrow(() -> new UserNotFountException("Customer with " + email + " email does not exist"));
 
         Pageable pageable = PageRequest.of(pageNumber, 3, Sort.by("orderDateTime"));
+        log.info("Customer orders retrieved successfully");
         return orderRepository.findAllByCustomerEmail(customer.getEmail(), pageable);
-    }
-
-    public int getOrderCount(String email) {
-        Customer customer = customerRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
-        return customer.getOrders().size();
     }
 
 }

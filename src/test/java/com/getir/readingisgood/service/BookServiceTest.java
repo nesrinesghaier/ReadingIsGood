@@ -39,9 +39,8 @@ public class BookServiceTest {
 
     @Test
     public void updateStock() {
-        when(bookRepository.findById(any())).thenReturn(Optional.of(Book.builder().build()));
         bookService.updateStock(Book.builder().title("test").author("test").stock(5).build(), 5);
-        verify(bookRepository, times(1)).findById(any());
+        verify(bookRepository, times(1)).save(any());
     }
 
     BookDto mockBookDto() {

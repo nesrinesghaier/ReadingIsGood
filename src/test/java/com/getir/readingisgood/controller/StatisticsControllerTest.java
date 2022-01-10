@@ -27,7 +27,7 @@ public class StatisticsControllerTest {
     @Test
     public void getMonthlyStatistics() {
         when(orderService.getOrderStatistics(any())).thenReturn(mockListOfStatisticsDto());
-        ResponseEntity<List<StatisticsDto>> response = statisticsController.getMonthlyStatistics("test@test.com");
+        ResponseEntity<?> response = statisticsController.getMonthlyStatistics("test@test.com");
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 

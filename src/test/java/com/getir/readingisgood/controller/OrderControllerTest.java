@@ -40,7 +40,7 @@ public class OrderControllerTest {
 
     @Test
     public void getOrderById() {
-        ResponseEntity<Order> response = OrderController.getOrderById(1);
+        ResponseEntity<?> response = OrderController.getOrderById(1);
         verify(OrderService, times(1)).getOrderById(anyLong());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }

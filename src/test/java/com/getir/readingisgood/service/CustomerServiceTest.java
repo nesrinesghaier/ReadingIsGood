@@ -5,6 +5,7 @@ import com.getir.readingisgood.entity.Order;
 import com.getir.readingisgood.model.EStatus;
 import com.getir.readingisgood.repository.CustomerRepository;
 import com.getir.readingisgood.repository.OrderRepository;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,11 +16,9 @@ import org.springframework.data.domain.PageImpl;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -36,24 +35,17 @@ public class CustomerServiceTest {
     @Test
     public void getCustomerOrdersTest() {
         Page<Order> page = new PageImpl<>(List.of(mockOrder()));
+        when(customerRepository.findByEmail(any())).thenReturn(Optional.of(Customer.builder().build()));
         when(orderRepository.findAllByCustomerEmail(any(), any())).thenReturn(page);
         customerService.getCustomerOrders("test@test.com", 0);
         verify(orderRepository, times(1)).findAllByCustomerEmail(any(), any());
     }
 
     @Test
-    public void getOrderCountTest() {
-        when(customerRepository.findByEmail(any())).thenReturn(Optional.of(Customer.builder().orders(new ArrayList<>()).build()));
-        int orderCount = customerService.getOrderCount("test@test.com");
-        verify(customerRepository, times(1)).findByEmail(any());
-        assertEquals(0, orderCount);
-    }
-
-    @Test(expected = EntityNotFoundException.class)
-    public void getOrderCountTestException() {
-        when(customerRepository.findByEmail(any())).thenThrow(new EntityNotFoundException());
-        customerService.getOrderCount("test@test2.com");
-        verify(customerRepository, times(0)).findByEmail(any());
+    public void getCustomerOrdersExceptionTest() {
+        Page<Order> page = new PageImpl<>(List.of(mockOrder()));
+        when(customerRepository.findByEmail(any())).thenThrow(new EntityNotFoundException("Customer with given email does not exist"));
+        Assert.assertThrows(EntityNotFoundException.class, () -> customerService.getCustomerOrders("test@test.com", 0));
     }
 
     Order mockOrder() {

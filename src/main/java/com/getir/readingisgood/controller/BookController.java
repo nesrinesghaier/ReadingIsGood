@@ -33,6 +33,7 @@ public class BookController {
             log.info("Book stock updated successfully");
             return ResponseEntity.ok(book);
         } catch (EntityNotFoundException e) {
+            log.error("Specified book does not exist");
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
