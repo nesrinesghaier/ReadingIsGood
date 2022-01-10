@@ -6,18 +6,11 @@ customers within the same day. That is why stock **consistency** is the first pr
 vision operations.
 
 Since consistency is the priority, it's better to go with a relation DB than a NoSQL one. 
-In this project, I used Spring Boot as a framework for backend and PostgreSQL as a DB. 
+In this project, I used Spring Boot as a framework for backend and PostgreSQL as a DB.
+I tried to add unit tests and integration tests in the project (Junit).
 
 ### DB diagram
 ![img.png](img.png)
-For further reference, please consider the following sections:
-
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.6.2/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.6.2/maven-plugin/reference/html/#build-image)
-* [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/2.6.2/reference/htmlsingle/#using-boot-devtools)
-
-I tried to add unit tests and integration tests in the project (Junit). 
 
 ## Guidelines
 Since this application should be containerized, I used docker for it. 
