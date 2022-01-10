@@ -1,6 +1,7 @@
 package com.getir.readingisgood.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,6 +28,7 @@ public class Customer {
     @Column
     @NotBlank
     @Size(max = 120)
+    @JsonIgnore()
     private String password;
 
     @Column
@@ -39,6 +41,7 @@ public class Customer {
     private String address;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
+    @JsonIgnore()
     List<Order> orders;
 
 }

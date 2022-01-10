@@ -1,6 +1,7 @@
 package com.getir.readingisgood.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.getir.readingisgood.model.EStatus;
 import lombok.*;
 
@@ -33,6 +34,7 @@ public class Order {
 
     @ManyToOne()
     @JoinColumn(name = "username")
+    @JsonIgnore()
     private Customer customer;
 
 }

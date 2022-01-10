@@ -1,6 +1,7 @@
 package com.getir.readingisgood.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,6 +31,7 @@ public class OrderDetail {
 
     @ManyToOne()
     @JoinColumn(name = "order_id", nullable = false, updatable = false)
+    @JsonIgnore()
     private Order order;
 
     @ManyToOne()

@@ -1,6 +1,7 @@
 package com.getir.readingisgood.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -40,9 +41,11 @@ public class Book {
     private int stock;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+    @JsonIgnore()
     List<OrderDetail> orderDetails;
 
     @Version
+    @JsonIgnore()
     private Long version;
 
 }
