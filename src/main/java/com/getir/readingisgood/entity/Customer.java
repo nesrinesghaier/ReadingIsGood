@@ -1,12 +1,14 @@
 package com.getir.readingisgood.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,11 +17,19 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Table(name = "customer")
+@Table(name = "customers", uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
 public class Customer {
 
     @Id
-    private String email;
+    @Email
+    @Size(max = 50)
+    private String username;
+
+    @Column
+    @NotBlank
+    @Size(max = 120)
+    @JsonIgnore()
+    private String password;
 
     @Column
     private String firstName;
@@ -29,6 +39,10 @@ public class Customer {
 
     @Column
     private String address;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
+    @JsonIgnore()
+    List<Order> orders;
 
 }
 
