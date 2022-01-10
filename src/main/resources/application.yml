@@ -17,5 +17,6 @@ spring:
     defer-datasource-initialization: true
 app:
   jwtSecret: secret
-  jwtExpirationMs: 864000
+  jwtExpirationMs: 86400000
+  authHeader: Authorization
 

@@ -35,9 +35,9 @@ public class OrderService {
         return orderRepository.findAllByOrderDateTimeBetween(startDate.atStartOfDay(), endDate.atTime(11, 59));
     }
 
-    public List<StatisticsDto> getOrderCount(String username) {
-        List<StatisticsDto> monthlyOrdersCount = orderRepository.getOrdersCountByMonth(username);
-        List<StatisticsDto> statisticsDtoList = orderRepository.getPurchasedBooksCountByMonth(username);
+    public List<StatisticsDto> getOrderCount(String email) {
+        List<StatisticsDto> monthlyOrdersCount = orderRepository.getOrdersCountByMonth(email);
+        List<StatisticsDto> statisticsDtoList = orderRepository.getPurchasedBooksCountByMonth(email);
         statisticsDtoList.forEach(s -> s.setOrderCount(monthlyOrdersCount.stream()
                 .filter(t -> t.getMonth().trim().equals(s.getMonth().trim()))
                 .findFirst().orElse(StatisticsDto.builder().build()).getOrderCount()));
