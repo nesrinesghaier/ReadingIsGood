@@ -27,7 +27,7 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public Order getOrder(long orderId) {
+    public Order getOrderById(long orderId) {
         return orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
     }
 
@@ -35,7 +35,7 @@ public class OrderService {
         return orderRepository.findAllByOrderDateTimeBetween(startDate.atStartOfDay(), endDate.atTime(11, 59));
     }
 
-    public List<StatisticsDto> getOrderCount(String email) {
+    public List<StatisticsDto> getOrderStatistics(String email) {
         List<StatisticsDto> monthlyOrdersCount = orderRepository.getOrdersCountByMonth(email);
         List<StatisticsDto> statisticsDtoList = orderRepository.getPurchasedBooksCountByMonth(email);
         statisticsDtoList.forEach(s -> s.setOrderCount(monthlyOrdersCount.stream()

@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
-import java.util.Optional;
 
 @Service
 public class BookService {
@@ -21,11 +20,11 @@ public class BookService {
         bookRepository.save(bookToBeAdded);
     }
 
-    public void updateBook(BookDto bookDto) {
-        Optional<Book> bookOptional = bookRepository.findById(bookDto.getId());
-        if (bookOptional.isPresent()) {
-            bookRepository.save(buildBookFromDto(bookDto));
-        }
+    public void updateBookStock(BookDto bookDto) {
+        Book book = bookRepository.findById(bookDto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Book with specified id does not exist"));
+        book.setStock(bookDto.getStock());
+        bookRepository.save(book);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
