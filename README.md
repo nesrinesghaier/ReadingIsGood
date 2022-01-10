@@ -32,7 +32,7 @@ git clone https://github.com/nesrinesghaier/ReadingIsGood.git
 ```maven
 mvn clean package -Dmaven.test.skip=true
 ```
-4. run docker-compose-dev file to start the db service alongside the java app or run the docker-compose-test file to run the whole application 
+4. run docker-compose-dev file to start the db service alongside the java app or run the docker-compose file to run the whole application 
 ```
 docker-compose -f docker-compose-dev.yml up -d
 ```

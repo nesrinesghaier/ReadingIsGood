@@ -51,8 +51,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             } catch (SignatureException e) {
                 log.error("Authentication Failed. Email or Password not valid.");
             }
-        } else {
-            log.warn("Couldn't find bearer string, header will be ignored");
         }
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
