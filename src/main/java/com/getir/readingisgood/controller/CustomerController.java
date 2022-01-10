@@ -1,10 +1,12 @@
 package com.getir.readingisgood.controller;
 
+import com.getir.readingisgood.entity.Order;
 import com.getir.readingisgood.model.JwtResponse;
 import com.getir.readingisgood.model.LoginRequest;
 import com.getir.readingisgood.model.SignUpRequest;
 import com.getir.readingisgood.service.AuthService;
 import com.getir.readingisgood.service.CustomerService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,19 +24,19 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PostMapping("/auth/signin")
-    public ResponseEntity<?> signIn(@Valid @RequestBody LoginRequest request) {
-        JwtResponse jwtResponse = authService.authenticateUser(request);
+    public ResponseEntity<JwtResponse> signIn(@Valid @RequestBody LoginRequest request) {
+        JwtResponse jwtResponse = authService.signIn(request);
         return ResponseEntity.ok(jwtResponse);
     }
 
     @PostMapping("/auth/signup")
-    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequest request) {
-        return ResponseEntity.ok(authService.registerUser(request));
+    public ResponseEntity<String> signUp(@Valid @RequestBody SignUpRequest request) {
+        return ResponseEntity.ok(authService.registerCustomer(request));
     }
 
-    @GetMapping("/api/{username}")
-    public ResponseEntity<?> getCustomerOrders(@PathVariable String username) {
-        return ResponseEntity.ok(customerService.getCustomerOrders(username));
+    @GetMapping("/api/orders")
+    public ResponseEntity<Page<Order>> getCustomerOrders(@RequestParam String username, @RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(customerService.getCustomerOrders(username, page));
     }
 
 
