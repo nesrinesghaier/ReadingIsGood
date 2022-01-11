@@ -3,6 +3,7 @@ package com.getir.readingisgood.service;
 import com.getir.readingisgood.entity.Customer;
 import com.getir.readingisgood.entity.Order;
 import com.getir.readingisgood.entity.OrderDetail;
+import com.getir.readingisgood.model.EStatus;
 import com.getir.readingisgood.model.OrderDto;
 import com.getir.readingisgood.model.StatisticsDto;
 import com.getir.readingisgood.repository.CustomerRepository;
@@ -34,7 +35,7 @@ public class OrderService {
                 .orElseThrow(() -> new UsernameNotFoundException("Customer with email " + orderDto.getCustomerEmail() + " not found"));
         Order order = Order.builder()
                 .orderDateTime(LocalDateTime.now())
-                .status(orderDto.getStatus())
+                .status(EStatus.NEW)
                 .customer(customer)
                 .build();
         addOrderDetailsDtoToOrder(orderDto, order);

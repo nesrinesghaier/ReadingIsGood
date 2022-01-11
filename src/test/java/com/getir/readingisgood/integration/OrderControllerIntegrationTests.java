@@ -69,7 +69,6 @@ class OrderControllerIntegrationTests {
     OrderDto mockOrderDto() {
         return OrderDto.builder()
                 .orderDateTime(LocalDateTime.now())
-                .status(EStatus.NEW)
                 .orderDetails(List.of(OrderDetailDto
                         .builder()
                         .price(25.2)
@@ -83,7 +82,6 @@ class OrderControllerIntegrationTests {
     OrderDto mockOrderDto1() {
         return OrderDto.builder()
                 .orderDateTime(LocalDateTime.now())
-                .status(EStatus.NEW)
                 .orderDetails(List.of(OrderDetailDto
                         .builder()
                         .price(25.2)

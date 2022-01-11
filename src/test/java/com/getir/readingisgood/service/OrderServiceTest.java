@@ -65,7 +65,6 @@ public class OrderServiceTest {
     OrderDto mockOrderDto() {
         return OrderDto.builder()
                 .orderDateTime(LocalDateTime.now())
-                .status(EStatus.PENDING)
                 .orderDetails(List.of(OrderDetailDto
                         .builder()
                         .price(25.2)
