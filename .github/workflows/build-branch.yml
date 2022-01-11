@@ -19,11 +19,14 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots verify
-
       - name: Build
         uses: docker/build-push-action@v2
         with:
           cache-to: type=inline
           tags: reading-is-good:latest
+
+      - name: Start Application
+        run: docker-compose -f docker-compose.test.yml up -d
+
+      - name: Stop Application
+        run: docker-compose -f docker-compose.test.yml down
