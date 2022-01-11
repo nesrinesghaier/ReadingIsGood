@@ -3,7 +3,6 @@ package com.getir.readingisgood.service;
 import com.getir.readingisgood.entity.Customer;
 import com.getir.readingisgood.entity.Order;
 import com.getir.readingisgood.entity.OrderDetail;
-import com.getir.readingisgood.model.EStatus;
 import com.getir.readingisgood.model.OrderDetailDto;
 import com.getir.readingisgood.model.OrderDto;
 import com.getir.readingisgood.repository.CustomerRepository;
@@ -15,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,7 +62,6 @@ public class OrderServiceTest {
 
     OrderDto mockOrderDto() {
         return OrderDto.builder()
-                .orderDateTime(LocalDateTime.now())
                 .orderDetails(List.of(OrderDetailDto
                         .builder()
                         .price(25.2)

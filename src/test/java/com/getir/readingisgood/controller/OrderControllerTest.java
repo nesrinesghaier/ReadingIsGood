@@ -1,7 +1,6 @@
 package com.getir.readingisgood.controller;
 
 import com.getir.readingisgood.entity.Order;
-import com.getir.readingisgood.model.EStatus;
 import com.getir.readingisgood.model.OrderDetailDto;
 import com.getir.readingisgood.model.OrderDto;
 import com.getir.readingisgood.service.OrderService;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -55,7 +53,6 @@ public class OrderControllerTest {
 
     OrderDto mockOrderDto() {
         return OrderDto.builder()
-                .orderDateTime(LocalDateTime.now())
                 .orderDetails(List.of(OrderDetailDto
                         .builder()
                         .price(25.2)

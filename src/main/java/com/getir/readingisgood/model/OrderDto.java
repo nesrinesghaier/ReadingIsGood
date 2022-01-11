@@ -3,7 +3,6 @@ package com.getir.readingisgood.model;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -13,6 +12,5 @@ import java.util.List;
 @ToString
 public class OrderDto {
     private String customerEmail;
-    private LocalDateTime orderDateTime;
     List<OrderDetailDto> orderDetails;
 }

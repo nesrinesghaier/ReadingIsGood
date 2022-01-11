@@ -2,7 +2,6 @@ package com.getir.readingisgood.integration;
 
 import com.getir.readingisgood.controller.OrderController;
 import com.getir.readingisgood.entity.Order;
-import com.getir.readingisgood.model.EStatus;
 import com.getir.readingisgood.model.OrderDetailDto;
 import com.getir.readingisgood.model.OrderDto;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -68,7 +66,6 @@ class OrderControllerIntegrationTests {
 
     OrderDto mockOrderDto() {
         return OrderDto.builder()
-                .orderDateTime(LocalDateTime.now())
                 .orderDetails(List.of(OrderDetailDto
                         .builder()
                         .price(25.2)
@@ -81,7 +78,6 @@ class OrderControllerIntegrationTests {
 
     OrderDto mockOrderDto1() {
         return OrderDto.builder()
-                .orderDateTime(LocalDateTime.now())
                 .orderDetails(List.of(OrderDetailDto
                         .builder()
                         .price(25.2)
