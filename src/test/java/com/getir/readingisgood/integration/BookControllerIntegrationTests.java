@@ -55,6 +55,7 @@ class BookControllerIntegrationTests {
                 .publisher("test")
                 .type("test")
                 .stock(20)
+                .price(19.9)
                 .build();
     }
 }

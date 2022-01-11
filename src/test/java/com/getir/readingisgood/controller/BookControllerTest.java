@@ -59,6 +59,7 @@ public class BookControllerTest {
                 .publisher("test")
                 .type("test")
                 .stock(2)
+                .price(19.9)
                 .build();
     }
 }

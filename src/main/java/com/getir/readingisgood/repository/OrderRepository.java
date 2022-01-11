@@ -23,11 +23,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
 
     @Query("select new com.getir.readingisgood.model.StatisticsDto(to_char(o.orderDateTime, 'Month') as month," +
-            "sum(od.price * od.quantity) as purchasedOrdersAmount, sum(od.quantity) as purchasedBooksCount)" +
+            "sum(b.price * od.quantity) as purchasedOrdersAmount, sum(od.quantity) as purchasedBooksCount) " +
             "from Order o " +
             "inner join OrderDetail od on o.id = od.order.id " +
-            "where o.customer.email = ?1" +
-            "  and o.status = 'COMPLETED' " +
+            "inner join Book b on b.id = od.book.id "+
+            "where o.customer.email = ?1 " +
+            " and o.status = 'COMPLETED' " +
             "group by month")
     List<StatisticsDto> getPurchasedBooksCountByMonth(String email);
 

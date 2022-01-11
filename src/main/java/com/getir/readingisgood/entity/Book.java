@@ -35,6 +35,10 @@ public class Book {
     private String type;
 
     @Column
+    @NotNull
+    private double price;
+
+    @Column
     private String publisher;
 
     @Column

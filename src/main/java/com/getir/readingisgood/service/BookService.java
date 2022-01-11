@@ -40,6 +40,7 @@ public class BookService {
                 .publisher(bookDto.getPublisher())
                 .type(bookDto.getType())
                 .stock(bookDto.getStock())
+                .price(bookDto.getPrice())
                 .build();
     }
 }

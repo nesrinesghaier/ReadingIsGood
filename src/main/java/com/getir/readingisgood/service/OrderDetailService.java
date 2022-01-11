@@ -25,7 +25,6 @@ public class OrderDetailService {
         if (book.getStock() >= orderDetailDto.getQuantity()) {
             bookService.updateStock(book, orderDetailDto.getQuantity());
             return OrderDetail.builder()
-                    .price(orderDetailDto.getPrice())
                     .quantity(orderDetailDto.getQuantity())
                     .book(book)
                     .order(order)

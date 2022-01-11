@@ -21,9 +21,6 @@ public class OrderDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
-    @NotNull
-    private double price;
 
     @Column
     @NotNull
